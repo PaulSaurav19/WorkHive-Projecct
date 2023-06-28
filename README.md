@@ -126,6 +126,7 @@ npm start
 ## APIs Used
 
 * Stripe(to monitor payments)
+* Postman
 
 <a name="contri"></a>
 ## Contributors
