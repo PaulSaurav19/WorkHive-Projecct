@@ -1,2 +1,2 @@
-# WorkHive-Projecct
+# WorkHive-Project
 A mern stack freelancing website.
