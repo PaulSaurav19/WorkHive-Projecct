@@ -139,8 +139,5 @@ Feel free to file an issue if you come across any bugs
 ### Made at:
 
 <p align="center">
-<img width="112px" src="https://scontent.flko4-1.fna.fbcdn.net/v/t39.30808-6/247395021_4810221262322028_8169788296240690130_n.png?_nc_cat=103&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=MjB37MvQffgAX8Xd9Mw&_nc_ht=scontent.flko4-1.fna&oh=00_AT_avrvTgmqCNnrIDrLKz6t8xeIpCaW8rIMo-jOA9GDieQ&oe=61CE5FCA" />
-</p>
-<p align="center">
 <img alt="MNNIT" width="112px" src="http://www.mnnit.ac.in/institutelogo/MNNIT%20(logo)png.png" />
 </p>
