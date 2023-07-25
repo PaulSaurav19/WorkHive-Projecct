@@ -1,5 +1,8 @@
 # WorkHive-Project
 <h1 align="center">WORKHIVE</h1>
+<p align="center">
+<img alt="Logo" width="142px" src="client/public/img/logo2.png"/>
+</p>
 
 <h3 align="center">A freelancing website for college students using the toolset from the MERN stack.</h3>
 
