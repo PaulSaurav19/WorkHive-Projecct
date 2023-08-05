@@ -181,4 +181,15 @@ export const gigs = [
     star: 4,
     username: "Wilton Hunt",
   },
+
+  {
+      id: 9,
+      img: "https://images.pexels.com/photos/1579708/pexels-photo-1579708.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      pp: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      desc: "I will create manipulative art",
+      price: 100,
+      star: 4,
+      username: "Mark Nicholas",
+    },
+
 ];
