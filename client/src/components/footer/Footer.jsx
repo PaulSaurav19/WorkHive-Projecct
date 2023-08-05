@@ -52,7 +52,7 @@ function Footer() {
             <span>Community Standards</span>
           </div>
           <div className="item">
-            <h2>More From Fiverr</h2>
+            <h2>More From Workhive</h2>
             <span>Workhive Business</span>
             <span>Workhive Pro</span>
             <span>Workhive Logo Maker</span>
