@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
+import newRequest from "../../utils/newRequest";
 
 function Navbar() {
   const [active, setActive] = useState(false);
@@ -19,13 +20,19 @@ function Navbar() {
     };
   }, []);
 
-  // const currentUser = null
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  const currentUser = {
-    id: 1,
-    username: "Sourav",
-    isSeller: true,
-  };
+  const navigate = useNavigate();
+
+  const handleLogout = async ()=> {
+    try{
+      await newRequest.post("/auth/logout"); 
+      localStorage.setItem("currentUser", null);
+      navigate("/")
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -44,11 +51,12 @@ function Navbar() {
           {currentUser ? (
             <div className="user" onClick={()=>setOpen(!open)}>
               <img
-                src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src= {currentUser.img || "/img/noavatar.jpg"}
                 alt=""
               />
               <span>{currentUser?.username}</span>
-              {open && <div className="options">
+              {open && (
+                <div className="options">
                 {currentUser.isSeller && (
                   <>
                     <Link className="link" to="/mygigs">
@@ -65,14 +73,15 @@ function Navbar() {
                 <Link className="link" to="/messages">
                   Messages
                 </Link>
-                <Link className="link" to="/">
+                <Link className="link" onClick={handleLogout}>
                   Logout
                 </Link>
-              </div>}
+              </div>
+            )}
             </div>
           ) : (
             <>
-              <span>Sign in</span>
+              <Link to="/login" className="link"> Sign in</Link>
               <Link className="link" to="/register">
                 <button>Join</button>
               </Link>
@@ -120,3 +129,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
