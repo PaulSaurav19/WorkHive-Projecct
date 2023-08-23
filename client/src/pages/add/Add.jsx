@@ -1,170 +1,166 @@
-import React, { useReducer, useState } from "react";
-import "./Add.scss";
-import { gigReducer, INITIAL_STATE } from "../../reducers/gigReducer";
-import upload from "../../utils/upload";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import newRequest from "../../utils/newRequest";
-import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
+import { useEffect, useReducer, useState } from 'react';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { gigReducer, initialState } from '../../reducers/gigReducer';
+import { cards } from '../../data';
+import { axiosFetch, generateImageURL } from '../../utils';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../atoms';
+import './Add.scss';
 
 const Add = () => {
-  const [singleFile, setSingleFile] = useState(undefined);
-  const [files, setFiles] = useState([]);
+  const user = useRecoilValue(userState);
+  const [state, dispatch] = useReducer(gigReducer, initialState);
+  const [coverImage, setCoverImage] = useState(null);
+  const [gigImages, setGigImages] = useState([]);
   const [uploading, setUploading] = useState(false);
-
-  const [state, dispatch] = useReducer(gigReducer, INITIAL_STATE);
-
-  const handleChange = (e) => {
-    dispatch({
-      type: "CHANGE_INPUT",
-      payload: { name: e.target.name, value: e.target.value },
-    });
-  };
-  const handleFeature = (e) => {
-    e.preventDefault();
-    dispatch({
-      type: "ADD_FEATURE",
-      payload: e.target[0].value,
-    });
-    e.target[0].value = "";
-  };
-
-  const handleUpload = async () => {
-    setUploading(true);
-    try {
-      const cover = await upload(singleFile);
-
-      const images = await Promise.all(
-        [...files].map(async (file) => {
-          const url = await upload(file);
-          return url;
-        })
-      );
-      setUploading(false);
-      dispatch({ type: "ADD_IMAGES", payload: { cover, images } });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
-
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
-    mutationFn: (gig) => {
-      return newRequest.post("/gigs", gig);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["myGigs"]);
-    },
-  });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    mutation.mutate(state);
-    // navigate("/mygigs")
-  };
+  const mutation = useMutation({
+    mutationFn: (gig) =>
+      axiosFetch.post('/gigs', gig)
+      .then(({data}) => {
+        return data;
+      })
+      .catch(({response}) => {
+        toast.error(response.data.message);
+      })
+    ,
+    onSuccess: () => 
+      queryClient.invalidateQueries(['my-gigs'])
+  })
+
+  const handleFormCange = (event) => {
+    const { name, value } = event.target;
+    dispatch({
+      type: 'CHANGE_INPUT',
+      payload: { name, value }
+    })
+  }
+
+  const handleFormFeature = (event) => {
+    event.preventDefault();
+    dispatch({
+      type: 'ADD_FEATURE',
+      payload: event.target[0].value
+    })
+    event.target.reset();
+  }
+
+  const handleImageUploads = async () => {
+    try {
+      setUploading(true);
+      const cover = await generateImageURL(coverImage);
+      const images = await Promise.all(
+        [...gigImages].map(async (img) => await generateImageURL(img))
+      )
+      dispatch({
+        type: 'ADD_IMAGES',
+        payload: { cover: cover.url, images: images.map((img) => img.url) }
+      })
+      setUploading(false);
+      setDisabled(true);
+    }
+    catch (error) {
+      console.log(error);
+      setUploading(false);
+    }
+  }
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const form = {...state, userID: user._id}
+    for(let key in form) {
+      if(form[key] === '' || form[key].length === 0) {
+        toast.error('Please fill input field: ' + key);
+        return;
+      }
+    }
+    toast.success("Congratulations! You're on the market!")
+    mutation.mutate(form);
+    setTimeout(() => {
+      navigate('/my-gigs');
+    }, 2000);
+  }
 
   return (
-    <div className="add">
+    <div className='add'>
       <div className="container">
         <h1>Add New Gig</h1>
         <div className="sections">
-          <div className="info">
+          <div className="left">
             <label htmlFor="">Title</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="e.g. I will do something I'm really good at"
-              onChange={handleChange}
-            />
+            <input name='title' type="text" placeholder="e.g. I will do something I'm really good at" onChange={handleFormCange} />
+
             <label htmlFor="">Category</label>
-            <select name="cat" id="cat" onChange={handleChange}>
-              <option value="design">Design</option>
-              <option value="web">Web Development</option>
-              <option value="animation">Animation</option>
-              <option value="music">Music</option>
+            <select name="category" onChange={handleFormCange}>
+              <option value=''>Category</option>
+              {
+                cards.map((item) => (
+                  <option key={item.id} value={item.slug}>{item.slug[0].toUpperCase() + item.slug.slice(1)}</option>
+                ))
+              }
             </select>
+
             <div className="images">
               <div className="imagesInputs">
                 <label htmlFor="">Cover Image</label>
-                <input
-                  type="file"
-                  onChange={(e) => setSingleFile(e.target.files[0])}
-                />
+                <input type="file" accept='image/*' onChange={(event) => setCoverImage(event.target.files[0])} />
+                <br />
                 <label htmlFor="">Upload Images</label>
-                <input
-                  type="file"
-                  multiple
-                  onChange={(e) => setFiles(e.target.files)}
-                />
+                <input type="file" accept='image/*' multiple onChange={(event) => setGigImages(event.target.files)} />
               </div>
-              <button onClick={handleUpload}>
-                {uploading ? "uploading" : "Upload"}
-              </button>
+              <button disabled={!!disabled} onClick={handleImageUploads}>{uploading ? 'uploading' : disabled ? 'Uploaded' : 'upload'}</button>
             </div>
+
             <label htmlFor="">Description</label>
-            <textarea
-              name="desc"
-              id=""
-              placeholder="Brief descriptions to introduce your service to customers"
-              cols="0"
-              rows="16"
-              onChange={handleChange}
-            ></textarea>
-            <button onClick={handleSubmit}>Create</button>
+            <textarea name='description' cols="30" rows="16" placeholder='Brief descriptions to introduce your service to customers' onChange={handleFormCange}></textarea>
+            <button onClick={handleFormSubmit}>Create</button>
           </div>
-          <div className="details">
+
+          <div className="right">
             <label htmlFor="">Service Title</label>
-            <input
-              type="text"
-              name="shortTitle"
-              placeholder="e.g. One-page web design"
-              onChange={handleChange}
-            />
+            <input type="text" name='shortTitle' placeholder='e.g. One-page web design' onChange={handleFormCange} />
+
             <label htmlFor="">Short Description</label>
-            <textarea
-              name="shortDesc"
-              onChange={handleChange}
-              id=""
-              placeholder="Short description of your service"
-              cols="30"
-              rows="10"
-            ></textarea>
+            <textarea name='shortDesc' cols="30" rows="10" placeholder='Short description of your service' onChange={handleFormCange}></textarea>
+
             <label htmlFor="">Delivery Time (e.g. 3 days)</label>
-            <input type="number" name="deliveryTime" onChange={handleChange} />
+            <input type="number" name='deliveryTime' min='1' onChange={handleFormCange} />
+
             <label htmlFor="">Revision Number</label>
-            <input
-              type="number"
-              name="revisionNumber"
-              onChange={handleChange}
-            />
-            <label htmlFor="">Add Features</label>
-            <form action="" className="add" onSubmit={handleFeature}>
-              <input type="text" placeholder="e.g. page design" />
-              <button type="submit">add</button>
+            <input type="number" name='revisionNumber' min='1' onChange={handleFormCange} />
+
+            <label htmlFor="">Add Feature</label>
+            <form className='add' onSubmit={handleFormFeature}>
+              <input type="text" placeholder='e.g. page design' onChange={handleFormCange} />
+              <button type='submit'>Add</button>
             </form>
             <div className="addedFeatures">
-              {state?.features?.map((f) => (
-                <div className="item" key={f}>
-                  <button
-                    onClick={() =>
-                      dispatch({ type: "REMOVE_FEATURE", payload: f })
-                    }
-                  >
-                    {f}
-                    <span>X</span>
-                  </button>
-                </div>
-              ))}
+              {
+                state.features?.map((feature) => (
+                  <div key={feature} className="item">
+                    <button onClick={() => dispatch({ type: 'REMOVE_FEATURE', payload: feature })}>{feature}
+                      <span>X</span>
+                    </button>
+                  </div>
+                ))
+              }
             </div>
             <label htmlFor="">Price</label>
-            <input type="number" onChange={handleChange} name="price" />
+            <input name='price' type="number" min='1' onChange={handleFormCange} />
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Add; 
+export default Add

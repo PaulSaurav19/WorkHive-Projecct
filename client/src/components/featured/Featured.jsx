@@ -1,43 +1,66 @@
-import React, {useState} from "react";
-import "./Featured.scss";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
+import './Featured.scss';
 
-function Featured() {
-  const[input, setInput] = useState("");
+const Featured = () => {
+  const [search, setSearch] = useState('');
   const navigate = useNavigate();
-
-  const handleSubmit = () => {
-    navigate(`/gigs?search=${input}`);
-  };
+  
+  const handleSearch = () => {
+    if(search) {
+      navigate(`/gigs?search=${search}`);
+    }
+  }
 
   return (
-    <div className="featured">
+    <div className='featured'>
       <div className="container">
+
         <div className="left">
-          <h1>
-            Find the perfect <span>freelance</span> services for your business
-          </h1>
+          <h1>Find the perfect <span>freelance</span> services for your business</h1>
           <div className="search">
             <div className="searchInput">
-              <img src="./img/search.png" alt="" />
-              <input type="text" placeholder='Try "building web app"' onChange={(e) => setInput(e.target.value)} />
+              <img src="./media/search.png" alt="search" />
+              <input type="search" placeholder='Try "building website"' onChange={(({ target: { value } }) => setSearch(value))} />
             </div>
-            <button onClick={handleSubmit}>Search</button>
+            <button onClick={handleSearch}>Search</button>
           </div>
           <div className="popular">
-            <span>Popular:</span>
-            <button>Web Design</button>
-            <button>WordPress</button>
-            <button>Logo Design</button>
-            <button>AI Services</button>
+         <span>Popular:</span>
+          
+            <button>
+            <Link to="/gigs?category=social" className="link">
+                  Digital Marketing
+                  </Link>
+            </button>
+
+            <button>
+            <Link to="/gigs?category=wordpress" className="link">
+                  WordPress
+                  </Link>
+            </button>
+
+            <button>
+            <Link to="/gigs?category=" className="link">
+                  Logo Design
+                  </Link>
+            </button>
+            
+            <button>
+            <Link to="/gigs?category=ai" className="link">
+            AI Services
+                  </Link>
+                  </button>
           </div>
         </div>
+
         <div className="right">
-          <img src="./img/man.png" alt="" />
+          <img src="./media/hero.png" alt="hero" />
         </div>
+        
       </div>
     </div>
-  );
+  )
 }
 
-export default Featured;
+export default Featured

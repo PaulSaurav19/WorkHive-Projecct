@@ -1,6 +1,10 @@
 * {
-  .link {
-    text-decoration: none;
-    color: inherit;
+    .link {
+      text-decoration: none;
+      color: inherit;
+    }
   }
-}
+
+  body {
+    overflow-x: hidden;
+  }

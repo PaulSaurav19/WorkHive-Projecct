@@ -1,69 +1,84 @@
-import React from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from 'react-hot-toast';
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRecoilValue } from "recoil";
+import { userState } from "../../atoms";
+import { axiosFetch } from '../../utils';
+import { Loader } from '../../components';
 import "./Message.scss";
-import newRequest from "../../utils/newRequest";
 
 const Message = () => {
-  const { id } = useParams();
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const user = useRecoilValue(userState);
+  const { conversationID } = useParams();
 
-  const queryClient = useQueryClient();
-
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+  
   const { isLoading, error, data } = useQuery({
-    queryKey: ["messages"],
+    queryKey: ['messages'],
     queryFn: () =>
-      newRequest.get(`/messages/${id}`).then((res) => {
-        return res.data;
-      }),
+      axiosFetch.get(`/messages/${conversationID}`)
+        .then(({ data }) => {
+          return data;
+        })
+        .catch(({ response }) => {
+          toast.error(response.data.message)
+        })
   });
-
+  
+  const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (message) => {
-      return newRequest.post(`/messages`, message);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["messages"]);
-    },
-  });
+    mutationFn: (message) => 
+      axiosFetch.post('/messages', message)
+    ,
+    onSuccess: () =>
+      queryClient.invalidateQueries(['messages'])
+  })
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleMessageSubmit = (event) => {
+    event.preventDefault();
+    
     mutation.mutate({
-      conversationId: id,
-      desc: e.target[0].value,
+      conversationID,
+      description: event.target[0].value
     });
-    e.target[0].value = "";
-  };
 
+    event.target.reset();
+  }
 
   return (
     <div className="message">
       <div className="container">
         <span className="breadcrumbs">
-          <Link to="/messages">Messages</Link> > {currentUser.username} >
+          <Link to="/messages" className="link">Messages</Link>
         </span>
-        {isLoading ? (
-          "loading"
-        ) : error ? (
-          "error"
-        ) : (
-        <div className="messages">
-        {data.map((m) => (
-              <div className={m.userId === currentUser._id ? "owner item" : "item"} key={m._id}>
-                <img
-                  src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                  alt=""
-                />
-                <p>{m.desc}</p>
+        {
+          isLoading
+            ? <div className="loader"> <Loader /> </div>
+            : error
+              ? 'Something went wrong'
+              : <div className="messages">
+                {
+                  data.map((message) => (
+                    <div className={message.userID._id === user._id ? 'owner item' : 'item'} key={message._id}>
+                      <img
+                        src={message.userID.image || '/media/noavatar.png'}
+                        alt=""
+                      />
+                      <p>
+                        {message.description}
+                      </p>
+                    </div>
+                  ))
+                }
               </div>
-            ))}
-          </div>
-        )}
+        }
         <hr />
-        <form className="write" onSubmit={handleSubmit}>
-          <textarea type="text" placeholder="write a message" />
-          <button type="submit">Send</button>
+        <form className="write" onSubmit={handleMessageSubmit}>
+          <textarea cols="30" rows="10" placeholder="Write a message"></textarea>
+          <button type='submit'>Send</button>
         </form>
       </div>
     </div>
