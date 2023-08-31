@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import { useEffect } from 'react';
+import {useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { axiosFetch, getCountryFlag } from '../../utils';
 import { Link, useParams } from 'react-router-dom';
@@ -13,7 +13,6 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept'
 
 const Gig = () => {
   const { _id } = useParams();
-
   const { isLoading, error, data } = useQuery({
     queryKey: ['gig'],
     queryFn: () =>
@@ -43,7 +42,7 @@ const Gig = () => {
             ? 'Something went wrong!'
             : <div className="container">
               <div className="left">
-                <span className="breadcrumbs">WorkHive Graphics & Design</span>
+                <span className="breadcrumbs">WorkHive{">"}{data?.category}</span>
                 <h1>{data?.title}</h1>
                 <div className="user">
                   <img
@@ -107,11 +106,11 @@ const Gig = () => {
                   </p>
                   <div className="details">
                     <div className="item">
-                      <img src="/img/clock.png" alt="" />
+                      <img src="/media/clock.png" alt="" />
                       <span>{data.deliveryTime} days Delivery</span>
                     </div>
                     <div className="item">
-                      <img src="/img/recycle.png" alt="" />
+                      <img src="/media/recycle.png" alt="" />
                       <span>{data.revisionNumber} Revisions</span>
                     </div>
                   </div>
@@ -119,7 +118,7 @@ const Gig = () => {
                     {
                       data?.features.map((feature) => (
                         <div key={feature} className="item">
-                          <img src="/img/greencheck.png" alt="" />
+                          <img src="/media/greencheck.png" alt="" />
                           <span>{feature}</span>
                         </div>
                       ))
