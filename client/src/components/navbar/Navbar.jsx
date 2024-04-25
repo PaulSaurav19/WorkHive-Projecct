@@ -19,6 +19,13 @@ const Navbar = () => {
   const [user, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleScrollTo = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   useEffect(() => {
     (async () => {
       setIsLoading(true);
@@ -116,10 +123,13 @@ const Navbar = () => {
 
         <div className="links">
           <div className="menu-links">
-            <span>WorkHive Community</span>
+          <Link to="/#workhiveCommunity" className="link" onClick={() => handleScrollTo("workhiveCommunity")}>
+              Workhive Community
+            </Link>
             <span>
-            <Link to="/" className="link">
-            Explore</Link>
+            <Link to="/#explores" className="link" onClick={() => handleScrollTo("explores")}>
+              Explore
+            </Link>
             </span>
             <span>English</span>
             {!user?.isSeller && <span>Become a Seller</span>}

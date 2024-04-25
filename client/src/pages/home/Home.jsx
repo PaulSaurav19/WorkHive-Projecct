@@ -53,7 +53,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="explore">
+      <div className="explore" id = "explores">
         <div className="container">
           <h1>Explore the marketplace</h1>
           <div className="items">
@@ -182,7 +182,7 @@ const Home = () => {
       </div>
     
       {/* WorkHive community Component */}
-      <div className="features dark">
+      <div className="features dark" id = "workhiveCommunity">
         <div className="container">
           <div className="item">
             <h2>workhive community</h2>
