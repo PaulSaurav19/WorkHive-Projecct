@@ -41,7 +41,7 @@ const Featured = () => {
             </button>
 
             <button>
-            <Link to="/gigs?category=" className="link">
+            <Link to="/gigs?category=design" className="link">
                   Logo Design
                   </Link>
             </button>
