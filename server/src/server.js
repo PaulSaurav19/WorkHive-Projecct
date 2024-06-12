@@ -1,10 +1,9 @@
-require('dotenv').config();
 const express = require('express');
 const compression = require('compression');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connect = require('./configs/db');
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 
 // Other Route files
 const { userRoute, conversationRoute, gigRoute, messageRoute, orderRoute, reviewRoute, authRoute } = require('./routes');
