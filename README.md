@@ -44,33 +44,36 @@
 <a name="fet"></a>
 ## Features
 
-### 🚀 Basic
+### 🚀 Essential Features
 
-- Registration, login and gig organize forms
-- Homepage / Landing Page with sliding menu
-- Gigs page with all categories
-- Gig description
-- Gig management
-- Message page with one-to-one chat with seller and buyer
-- Single gig page
-- Gig search
-- Image uploading via cloudinary, a media management
+- Registration Form: Sign up quickly and securely.
+- Login Form: Access your account with ease.
+- Gig Organize Form: Simplified form to help you create and manage your gigs.
+- Sliding Menu: Navigate through different sections effortlessly.
+- All Categories Displayed: Browse gigs across various categories.
+- Detailed View: See comprehensive details of each gig.
+- Manage Your Gigs: Easily create, update, or delete your gigs.
+- One-to-One Chat: Communicate directly with sellers or buyers.
+- Detailed Gig Information: All you need to know about a gig in one place.
+- Keyword-Based Search: Find gigs using keywords relevant to your needs.
+- Cloudinary Integration: Manage and upload images seamlessly.
+
 
 <br />
 
-### 🚀 Advanced 
+### 🚀 Advanced Features
 
-- Chat with buyers
-- Create new gigs and
-- Only the seller's gig can be deleted
-- Gigs can be reviewed by buyers based on comment and stars
-- Chat with seller
-- Filter and sort gigs for range of price
-- My Orders Section for details of all gigs bought
-- Can review gig and give stars
-- Order securely with Stripe
-- Search gigs with keywords
-- Payments page with Stripe integration
+- Chat with Buyers: Sellers can interact with potential buyers in real-time.
+- Chat with Sellers: Buyers can discuss details directly with sellers.
+- Create New Gigs: Easily create and publish new gigs.
+- Seller-Exclusive Deletion: Only sellers can delete their gigs.
+- Buyer Reviews: Buyers can leave comments and rate gigs with stars.
+- Price Range Filtering: Filter gigs based on your budget.
+- Sort Gigs: Organize gigs based on various criteria.
+- My Orders Section: View details of all the gigs you've purchased.
+- Review and Rate Gigs: Provide feedback and star ratings for gigs you've ordered.
+- Stripe Integration: Order gigs securely using Stripe payment gateway.
+- Payments Page: A dedicated page for handling payments smoothly.
 
 <br />
 
@@ -102,6 +105,12 @@ e.g. Secret key from stripe dashboard
 
 `NODE_ENV`
 e.g. 'development' for local and 'production' for production
+
+`DEV_CORS_ORIGIN`
+e.g. http://localhost:6173 (client localhost)
+
+`PROD_CORS_ORIGIN`
+e.g. client deployed link (https://yourProjectName.com) 
 ```
 ### Client
 ```
