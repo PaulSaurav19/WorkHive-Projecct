@@ -4,7 +4,7 @@ const compression = require('compression');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connect = require('./configs/db');
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // Other Route files
 const { userRoute, conversationRoute, gigRoute, messageRoute, orderRoute, reviewRoute, authRoute } = require('./routes');
@@ -17,8 +17,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(compression());
+const allowedOrigins = process.env.NODE_ENV === 'production'
+    ? (process.env.PROD_CORS_ORIGIN ? process.env.PROD_CORS_ORIGIN.split(',') : [])  // Placeholder for production
+    : process.env.DEV_CORS_ORIGIN.split(',');
+
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:4173', 'https://fiverr-clone-zuhed.netlify.app'],
+    origin: allowedOrigins,
     credentials: true
 }));
 
