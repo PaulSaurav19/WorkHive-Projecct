@@ -146,13 +146,11 @@ const Navbar = () => {
                 </span>
               )}
               {!user && (
-                <button
-                  className={showMenu || pathname !== "/" ? "join-active" : ""}
-                >
-                  <Link to="/register" className="link">
-                    Join
-                  </Link>
-                </button>
+                <Link to="/register" className={`link ${showMenu || pathname !== "/" ? "join-active" : ""}`}>
+                    <button>
+                      Join
+                    </button>
+                </Link>
               )}
               {user && (
                 <div className="user" onClick={() => setShowPanel(!showPanel)}>

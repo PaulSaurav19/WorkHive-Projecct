@@ -97,7 +97,8 @@
                 }
             }
 
-            .join-active {
+            /* Conditionally apply join-active class */
+            .join-active button {
                 color: #1DBF73;
                 font-weight: 600;
                 font-size: 14px;
