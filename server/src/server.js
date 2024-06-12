@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(compression());
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:4173', 'https://workhive-eta.vercel.app'],
+    origin: ['http://localhost:5173', 'http://localhost:4173', 'https://workhive-one.vercel.app'],
     credentials: true
 }));
 
