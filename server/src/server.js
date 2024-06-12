@@ -17,12 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(compression());
-const allowedOrigins = process.env.NODE_ENV === 'production'
-    ? (process.env.PROD_CORS_ORIGIN ? process.env.PROD_CORS_ORIGIN.split(',') : [])  // Placeholder for production
-    : process.env.DEV_CORS_ORIGIN.split(',');
-
 app.use(cors({
-    origin: allowedOrigins,
+    origin: ['http://localhost:5173', 'http://localhost:4173', 'https://workhive-eta.vercel.app'],
     credentials: true
 }));
 
