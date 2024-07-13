@@ -80,11 +80,11 @@ const Footer = () => {
             <h1>About</h1>
             <span>Careers</span>
             <span>Press & News</span>
-            <span>Partnership</span>
             <span>Privacy Policy</span>
             <span>Terms of Service</span>
-            <span>Intellectual Property Claims</span>
-            <span>Investor Relations</span>
+            {/* <span>Partnership</span> */}
+            {/* <span>Intellectual Property Claims</span>
+            <span>Investor Relations</span> */}
           </div>
           <div className="item">
             <h1>Support</h1>
