@@ -80,9 +80,9 @@ const Footer = () => {
             <h1>About</h1>
             <span>Careers</span>
             <span>Press & News</span>
+            <span>Partnership</span>
             <span>Privacy Policy</span>
             <span>Terms of Service</span>
-            {/* <span>Partnership</span> */}
             {/* <span>Intellectual Property Claims</span>
             <span>Investor Relations</span> */}
           </div>
@@ -109,8 +109,9 @@ const Footer = () => {
             <span>WorkHive Pro</span>
             <span>WorkHive Studios</span>
             <span>Get Inspired</span>
-            {/* <span>WorkHive Logo Maker</span>
-            <span>WorkHive Guild</span>
+
+            {/* <span>WorkHive Guild</span>
+            <span>WorkHive Logo Maker</span>
             <span>WorkHive Select</span>
             <span>Clear Voice</span>
             <span>WorkHive Workspace</span>
