@@ -99,23 +99,23 @@ const Footer = () => {
             <span>Blog</span>
             <span>Forum</span>
             <span>Community Standards</span>
-            <span>Podcast</span>
+            {/* <span>Podcast</span>
             <span>Affiliats</span>
-            <span>Invite a Friend</span>
+            <span>Invite a Friend</span> */}
           </div>
           <div className="item">
             <h1>More From WorkHive</h1>
             <span>WorkHive Community</span>
             <span>WorkHive Pro</span>
             <span>WorkHive Studios</span>
-            <span>WorkHive Logo Maker</span>
-            <span>WorkHive Guild</span>
             <span>Get Inspired</span>
+            {/* <span>WorkHive Logo Maker</span>
+            <span>WorkHive Guild</span>
             <span>WorkHive Select</span>
             <span>Clear Voice</span>
             <span>WorkHive Workspace</span>
             <span>Learn</span>
-            <span>Working Not Working</span>
+            <span>Working Not Working</span> */}
           </div>
         </div>
         <hr />
